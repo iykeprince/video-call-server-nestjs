@@ -9,6 +9,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({whitelist: true}))
   const configService = app.get(ConfigService)
   app.useWebSocketAdapter(new SocketIOAdapter(app, configService))
-  await app.listen(6000);
+  await app.listen(process.env.PORT || 6000);
 }
 bootstrap();
