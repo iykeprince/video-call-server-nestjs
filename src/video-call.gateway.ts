@@ -49,7 +49,7 @@ export class VideoCallGateway implements OnGatewayInit, OnGatewayConnection, OnG
             this.logger.debug(`user with id ${user.userId} not found`)
             throw new WsException("User not found")
         }
-        
+        this.io.to(user.socketId).emit('checkUserConnect', user)
         return user;
     }
 
