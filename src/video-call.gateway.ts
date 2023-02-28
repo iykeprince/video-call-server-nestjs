@@ -45,6 +45,7 @@ export class VideoCallGateway implements OnGatewayInit, OnGatewayConnection, OnG
     async handleCheckUserConnect(client: SocketWithAuth, payload: Omit<VideoCallPayload, "signal" | "from" | "name">){
 
         const user = this.users.find((user) => user.userId === payload.userId)
+        console.log('user',user)
         if(!user) {
             this.logger.debug(`user with id ${user.userId} not found`)
             throw new WsException("User not found")
