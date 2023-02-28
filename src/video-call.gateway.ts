@@ -42,12 +42,13 @@ export class VideoCallGateway implements OnGatewayInit, OnGatewayConnection, OnG
     }
 
     @SubscribeMessage('checkUserConnect')
-    async handleCheckUserConnect(client: SocketWithAuth, data: any){
-        console.log('type of ', typeof data)
-        const payload = JSON.parse(data);
+    async handleCheckUserConnect(client: SocketWithAuth, payload: any){
+        console.log('type of ', typeof payload)
+//         const payload = JSON.parse(data);
 console.log('check user payload', payload)
 
         const user = this.users.find((user) => user.userId === payload.userId)
+       
         console.log('user',user)
         if(!user) {
             this.logger.debug(`user with id ${user.userId} not found`)
