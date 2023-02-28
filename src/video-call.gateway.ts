@@ -36,12 +36,20 @@ export class VideoCallGateway implements OnGatewayInit, OnGatewayConnection, OnG
     async handleCallUser(client: SocketWithAuth, payload: VideoCallPayload){
 
         const user = this.users.find((user) => user.userId === payload.userId)
+       
+        this.io.to(user.socketId).emit('callUser', payload)
+        return user;
+    }
+
+    @SubscribeMessage('checkUserConnect')
+    async handleCheckUserConnect(client: SocketWithAuth, payload: Omit<VideoCallPayload, "signal" | "from" | "name">){
+
+        const user = this.users.find((user) => user.userId === payload.userId)
         if(!user) {
             this.logger.debug(`user with id ${user.userId} not found`)
             throw new WsException("User not found")
         }
-        console.log('call user', user)
-        this.io.to(user.socketId).emit('callUser', payload)
+        
         return user;
     }
 
