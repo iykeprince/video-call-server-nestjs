@@ -1,5 +1,5 @@
 import { Logger } from "@nestjs/common";
-import { MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from "@nestjs/websockets";
 import { Namespace, Socket } from "socket.io";
 import { Server } from "typeorm";
 import { AppService } from "./app.service";
@@ -36,6 +36,10 @@ export class VideoCallGateway implements OnGatewayInit, OnGatewayConnection, OnG
     async handleCallUser(client: SocketWithAuth, payload: VideoCallPayload){
 
         const user = this.users.find((user) => user.userId === payload.userId)
+        if(!user) {
+            this.logger.debug(`user with id ${user.userId} not found`)
+            throw new WsException("User not found")
+        }
         console.log('call user', user)
         this.io.to(user.socketId).emit('callUser', payload)
         return user;
