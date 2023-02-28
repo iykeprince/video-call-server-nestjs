@@ -46,11 +46,11 @@ const createTokenMiddleware = (jwtService: JwtService, configService: ConfigServ
     socket.handshake.auth.token || socket.handshake.headers['authorization'];
 
   logger.debug(`Validating auth token before connection: ${token}`);
-
   try {
     const payload = jwtService.verify(token, {secret: configService.get('JWT_SECRET')});
+    console.log(payload,'payload')
     socket.user = {
-      id: payload.sub,
+      id: payload.id,
       email: payload.email,
       username: payload.username,
     };
