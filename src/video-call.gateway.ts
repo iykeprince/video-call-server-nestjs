@@ -43,7 +43,7 @@ export class VideoCallGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
     @SubscribeMessage('checkUserConnect')
     async handleCheckUserConnect(client: SocketWithAuth, payload: Omit<VideoCallPayload, "signal" | "from" | "name">){
-
+console.log('check user payload', payload)
         const user = this.users.find((user) => user.userId === payload.userId)
         console.log('user',user)
         if(!user) {
